@@ -43,15 +43,30 @@ export const form = {
     en: "Hours of operation: Monday to Sunday, 5:00 AM – 9:00 PM",
   } satisfies Bi,
   submit: { es: "Confirmar Reservación", en: "Confirm Reservation" } satisfies Bi,
-  // Not from the copy deck (the deck assumes a live backend). Short,
-  // utilitarian notice for the submit-disabled state until Supabase is
-  // connected — kept in the same formal "usted" register as the rest of
-  // the site.
+  // Not from the copy deck (the deck assumes a live backend). Shown under
+  // the button while Supabase isn't connected yet — the form still fully
+  // submits in a simulated demo mode so the interactive/hover states are
+  // testable on the live site.
   closedNotice: {
-    es: "Las reservaciones en línea abren muy pronto.",
-    en: "Online reservations open very soon.",
+    es: "Modo de demostración — la reservación no se procesa todavía.",
+    en: "Demo mode — this reservation is not actually processed yet.",
   } satisfies Bi,
+  fieldRequired: { es: "Este campo es obligatorio.", en: "This field is required." } satisfies Bi,
 };
+
+// "¿Celebra algo en especial?" occasions — not from the copy deck; the
+// client supplied a reference screenshot of this exact checkbox set.
+export const celebrationOccasions: { key: string; label: Bi }[] = [
+  { key: "aniversario", label: { es: "Aniversario", en: "Anniversary" } },
+  { key: "cumpleanos", label: { es: "Cumpleaños", en: "Birthday" } },
+  { key: "luna-de-miel", label: { es: "Luna de miel", en: "Honeymoon" } },
+  { key: "dia-de-la-madre", label: { es: "Día de la madre", en: "Mother's Day" } },
+  { key: "dia-del-padre", label: { es: "Día del padre", en: "Father's Day" } },
+  { key: "baby-shower", label: { es: "Baby shower", en: "Baby shower" } },
+  { key: "despedida", label: { es: "Despedida", en: "Farewell" } },
+  { key: "graduaciones", label: { es: "Graduaciones", en: "Graduation" } },
+  { key: "compromisos", label: { es: "Compromisos", en: "Engagement" } },
+];
 
 export const howItWorks = {
   eyebrow: { es: "Cómo funciona", en: "How it works" } satisfies Bi,
