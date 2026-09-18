@@ -4,13 +4,19 @@ import Image from "next/image";
 import { withBasePath } from "@/lib/base-path";
 import { useBi, useLanguage } from "@/lib/i18n";
 import { langSwitchLabel } from "@/lib/content";
+import { useScrollDirection } from "./ui/useScrollDirection";
 
 export function Header() {
   const t = useBi();
   const { lang, toggle } = useLanguage();
+  const hidden = useScrollDirection();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-navy/95 backdrop-blur">
+    <header
+      className="sticky top-0 z-50 border-b border-white/10 bg-navy/95 backdrop-blur transition-transform duration-300 ease-out"
+      style={{ transform: hidden ? "translateY(-100%)" : "translateY(0)" }}
+      inert={hidden || undefined}
+    >
       <div
         className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-grid"
         style={{ height: "clamp(56px, 8vw, 72px)" }}

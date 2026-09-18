@@ -27,3 +27,7 @@ next-env.d.ts
 
 # vercel
 .vercel
+
+# Python bytecode cache from running the ui-ux-pro-max skill's scripts
+__pycache__/
+*.pyc
