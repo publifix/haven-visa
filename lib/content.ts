@@ -117,6 +117,18 @@ export type ServiceIconName =
   | "ConciergeBell"
   | "PlaneTakeoff";
 
+export const servicesIntro = {
+  eyebrow: { es: "Servicios", en: "Services" } satisfies Bi,
+  headline: {
+    es: "Descubre todo lo que te espera en Sala Haven",
+    en: "Discover everything waiting for you at Sala Haven",
+  } satisfies Bi,
+  subheadline: {
+    es: "Servicios exclusivos y comodidad premium antes de tu vuelo en la Terminal 1 del Aeropuerto Internacional de la Ciudad de México.",
+    en: "Exclusive services and premium comfort before your flight at Terminal 1 of Mexico City International Airport.",
+  } satisfies Bi,
+};
+
 export const services: { icon: ServiceIconName; title: Bi; description: Bi }[] = [
   {
     icon: "UtensilsCrossed",

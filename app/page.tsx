@@ -1,6 +1,7 @@
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { HowItWorks } from "@/components/HowItWorks";
+import { ImageBanner } from "@/components/ImageBanner";
 import { Services } from "@/components/Services";
 import { ImageTextSection } from "@/components/ImageTextSection";
 import { Faq } from "@/components/Faq";
@@ -15,12 +16,13 @@ export default function Home() {
       <main>
         <Hero />
         <HowItWorks />
+        <ImageBanner src="/photos/gallery/lounge-screens.webp" alt="Sala de estar de Sala HAVEN" />
         <Services />
         <ImageTextSection
           headline={about.headline}
           paragraphs={about.paragraphs}
-          photoSrc="/photos/about-reception.jpg"
-          photoAlt="Recepción de Sala HAVEN"
+          photoSrc="/photos/about-model.jpg"
+          photoAlt="Invitada disfrutando Sala HAVEN"
           imageSide="left"
           background="white"
         />
