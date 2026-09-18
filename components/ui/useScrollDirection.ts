@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
  * direction, so it never disappears before the visitor has scrolled
  * meaningfully into the page.
  */
-export function useScrollDirection(topOffset = 80) {
+export function useScrollDirection(topOffset = 80, minDelta = 8) {
   const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
@@ -17,14 +17,19 @@ export function useScrollDirection(topOffset = 80) {
 
     function update() {
       const y = window.scrollY;
+      const delta = y - lastY;
       if (y <= topOffset) {
         setHidden(false);
-      } else if (y > lastY) {
+      } else if (delta > minDelta) {
         setHidden(true); // scrolling down
-      } else if (y < lastY) {
+        lastY = y;
+      } else if (delta < -minDelta) {
         setHidden(false); // scrolling up
+        lastY = y;
       }
-      lastY = y;
+      // else: movement smaller than minDelta (scroll jitter/momentum
+      // micro-adjustments) — hold the current state and don't update
+      // lastY, so small back-and-forth wobble doesn't flicker the header.
       ticking = false;
     }
 
@@ -37,7 +42,7 @@ export function useScrollDirection(topOffset = 80) {
 
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [topOffset]);
+  }, [topOffset, minDelta]);
 
   return hidden;
 }

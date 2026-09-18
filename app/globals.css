@@ -2,35 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Visa Dialect — self-hosted, never substituted or loaded from a public CDN
-   (proprietary typeface under the Visa partnership agreement). */
-@font-face {
-  font-family: "Visa Dialect";
-  src:
-    url("/fonts/VisaDialect-Regular.woff2") format("woff2"),
-    url("/fonts/VisaDialect-Regular.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Visa Dialect";
-  src:
-    url("/fonts/VisaDialect-Medium.woff2") format("woff2"),
-    url("/fonts/VisaDialect-Medium.woff") format("woff");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Visa Dialect";
-  src:
-    url("/fonts/VisaDialect-Semibold.woff2") format("woff2"),
-    url("/fonts/VisaDialect-Semibold.woff") format("woff");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
+/* Visa Dialect @font-face rules live in app/layout.tsx as an inline <style>
+   instead of here: their url() paths must be prefixed with the GH Pages
+   basePath (/haven-visa) in that build target, which withBasePath() can
+   only do from a Server Component — a plain CSS file has no way to read
+   NEXT_PUBLIC_BASE_PATH at build time. */
 
 :root {
   /* Primary palette — Visa Infinite brand guideline sec. 2.1 */

@@ -13,11 +13,11 @@ import {
 } from "./icons/SocialIcons";
 
 const socials = [
-  { Icon: InstagramGlyph, label: "Instagram", href: "#" },
-  { Icon: FacebookGlyph, label: "Facebook", href: "#" },
-  { Icon: XGlyph, label: "X", href: "#" },
-  { Icon: LinkedInGlyph, label: "LinkedIn", href: "#" },
-  { Icon: TikTokGlyph, label: "TikTok", href: "#" },
+  { Icon: InstagramGlyph, label: "Instagram", href: "https://www.instagram.com/thegrandloungeelite" },
+  { Icon: FacebookGlyph, label: "Facebook", href: "https://www.facebook.com/thegrandloungeelite" },
+  { Icon: XGlyph, label: "X", href: "https://x.com/grandloungelite" },
+  { Icon: LinkedInGlyph, label: "LinkedIn", href: "https://www.linkedin.com/company/thegrandloungeelite/" },
+  { Icon: TikTokGlyph, label: "TikTok", href: "https://www.tiktok.com/@thegrandloungeelite" },
 ];
 
 export function Footer() {
@@ -51,6 +51,8 @@ export function Footer() {
               <a
                 key={label}
                 href={href}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={label}
                 className="text-white/70 transition-colors duration-200 hover:text-copper-1"
               >

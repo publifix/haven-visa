@@ -119,6 +119,41 @@ export default function RootLayout({
           href={withBasePath("/fonts/VisaDialect-Medium.woff2")}
           crossOrigin="anonymous"
         />
+        {/* @font-face src paths must be basePath-prefixed for the GH Pages
+            export target; a plain CSS file can't read that at build time
+            (see the note in globals.css), so these live here instead. */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+@font-face {
+  font-family: "Visa Dialect";
+  src:
+    url("${withBasePath("/fonts/VisaDialect-Regular.woff2")}") format("woff2"),
+    url("${withBasePath("/fonts/VisaDialect-Regular.woff")}") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Visa Dialect";
+  src:
+    url("${withBasePath("/fonts/VisaDialect-Medium.woff2")}") format("woff2"),
+    url("${withBasePath("/fonts/VisaDialect-Medium.woff")}") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Visa Dialect";
+  src:
+    url("${withBasePath("/fonts/VisaDialect-Semibold.woff2")}") format("woff2"),
+    url("${withBasePath("/fonts/VisaDialect-Semibold.woff")}") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}`,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
