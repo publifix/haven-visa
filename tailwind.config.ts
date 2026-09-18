@@ -5,22 +5,31 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "#1C1917",
-        "on-primary": "#FFFFFF",
-        secondary: "#44403C",
-        accent: "#C9A24B",
-        background: "#0C0A09",
-        foreground: "#FAFAF9",
-        muted: "#78716C",
-        border: "rgba(250, 250, 249, 0.12)",
-        "visa-navy": "#021E4C",
+        navy: "#010D36",
+        white: "#FFFFFF",
+        "copper-1": "#FFB59C",
+        "copper-2": "#B46D40",
+        "copper-3": "#7C360A",
+        "gray-light": "#F5F5F7",
+        "gray-medium": "#828693",
+        "gray-ink": "#303A51",
+        // The Grand Lounge Elite + Sala HAVEN's own gold accent (separate
+        // from the Visa Infinite palette, used only on GLE-branded chrome,
+        // never mixed with Visa lockups per brand guideline sec. 2.5).
+        "gle-gold": "#C9A24B",
       },
       fontFamily: {
-        display: ["var(--font-cormorant)", "serif"],
-        sans: ["var(--font-montserrat)", "sans-serif"],
+        display: ["var(--font-display)", "system-ui", "sans-serif"],
+        sans: ["var(--font-body)", "system-ui", "sans-serif"],
+      },
+      backgroundImage: {
+        "copper-gradient": "var(--visa-copper-gradient)",
       },
       letterSpacing: {
-        widest2: "0.35em",
+        eyebrow: "0.12em",
+      },
+      spacing: {
+        grid: "var(--grid-margin)",
       },
     },
   },

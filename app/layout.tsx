@@ -1,25 +1,12 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Montserrat } from "next/font/google";
 import "./globals.css";
-
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-cormorant",
-  display: "swap",
-});
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-montserrat",
-  display: "swap",
-});
+import { LanguageProvider } from "@/lib/i18n";
+import { withBasePath } from "@/lib/base-path";
 
 export const metadata: Metadata = {
-  title: "Sala HAVEN — Próximamente",
+  title: "Sala HAVEN — VISA Infinite",
   description:
-    "Sala HAVEN, VIP Lounge en Ciudad de México, parte de The Grand Lounge Elite. Exclusivo para tarjetahabientes VISA Infinite. Próximamente.",
+    "Sala HAVEN, VIP Lounge en la Terminal 1 del AICM, exclusiva para tarjetahabientes Visa Infinite. Operada por The Grand Lounge Elite.",
 };
 
 export default function RootLayout({
@@ -28,8 +15,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${cormorant.variable} ${montserrat.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+    <html lang="es">
+      <head>
+        <link
+          rel="preload"
+          as="font"
+          type="font/woff2"
+          href={withBasePath("/fonts/VisaDialect-Medium.woff2")}
+          crossOrigin="anonymous"
+        />
+      </head>
+      <body className="font-sans antialiased">
+        <LanguageProvider>{children}</LanguageProvider>
+      </body>
     </html>
   );
 }
