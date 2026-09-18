@@ -103,6 +103,10 @@
 html {
   color-scheme: dark;
   scroll-behavior: smooth;
+  /* Safeguard against any edge-bleeding section (negative margins on
+     full-bleed carousels, etc.) pushing the page wider than the
+     viewport and introducing an unwanted horizontal scrollbar. */
+  overflow-x: hidden;
 }
 
 body {
@@ -110,6 +114,7 @@ body {
   color: var(--color-text-on-navy);
   font-family: var(--font-body);
   font-weight: var(--fw-body);
+  overflow-x: hidden;
 }
 
 /* Visa Dialect eyebrow treatment — small caps + 12% tracking, sec. 3.2 */

@@ -6,8 +6,8 @@ import type { Bi } from "./i18n";
 
 export const hero = {
   headline: {
-    es: "Disfrute Sala Haven (VISA) como parte de sus beneficios",
-    en: "Enjoy Sala Haven (VISA) as part of your benefits",
+    es: "Disfrute Sala Haven como parte de sus beneficios VISA Infinite",
+    en: "Enjoy Sala Haven as part of your VISA Infinite benefits",
   } satisfies Bi,
   subheadline: {
     es: "Acceso exclusivo para tarjetahabientes Visa Infinite en la Terminal 1 del Aeropuerto Internacional de la Ciudad de México.",
@@ -32,12 +32,8 @@ export const form = {
   emailLabel: { es: "Email *", en: "Email *" } satisfies Bi,
   confirmEmailLabel: { es: "Confirmar email *", en: "Confirm email *" } satisfies Bi,
   airlineLabel: { es: "Aerolínea *", en: "Airline *" } satisfies Bi,
-  airlinePlaceholder: { es: "Aerolínea", en: "Airline" } satisfies Bi,
+  airlinePlaceholder: { es: "Selecciona aerolínea", en: "Select airline" } satisfies Bi,
   flightNumberLabel: { es: "Número de vuelo *", en: "Flight number *" } satisfies Bi,
-  addExperienceAccordion: {
-    es: "Añadir Experiencia a tu Reservación",
-    en: "Add an Experience to your Reservation",
-  } satisfies Bi,
   celebratingAccordion: {
     es: "¿Celebra algo en especial?",
     en: "Celebrating something special?",
@@ -381,3 +377,27 @@ export const footer = {
 export const bookAccessLabel = { es: "Reservar Acceso", en: "Book Access" } satisfies Bi;
 export const langSwitchLabel = { es: "English", en: "Español" } satisfies Bi;
 export const networkLabel = { es: "The Grand Lounge Elite", en: "The Grand Lounge Elite" } satisfies Bi;
+
+// Airline names are proper nouns — not translated between ES/EN. Alphabetical order.
+export const airlines = [
+  "Air Canada",
+  "Air France",
+  "All Nippon Airways",
+  "American Airlines",
+  "Avianca",
+  "British Airways",
+  "China Southern Airlines",
+  "Copa Airlines",
+  "Delta Air Lines",
+  "Emirates",
+  "Hainan Airlines",
+  "Iberia",
+  "KLM",
+  "LATAM Airlines",
+  "Lufthansa",
+  "Magnicharters",
+  "Turkish Airlines",
+  "United Airlines",
+  "Viva Aerobus",
+  "Volaris",
+] as const;

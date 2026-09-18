@@ -14,7 +14,7 @@ export function Gallery() {
     <section className="bg-navy">
       {/* Modo 2 — full bleed, single-hue (white) type over photography, no
           background color block, no copper rose here per sec. 2.3. */}
-      <div className="-mx-grid flex snap-x snap-mandatory gap-0 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      <div className="flex snap-x snap-mandatory gap-0 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         {gallery.photos.map((photo, i) => (
           <div key={i} className="relative aspect-[4/5] w-[85vw] shrink-0 snap-center sm:aspect-video sm:w-[70vw] lg:w-[45vw]">
             <Image
