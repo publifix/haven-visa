@@ -8,73 +8,56 @@ import { hero } from "@/lib/content";
 import { ReservationForm } from "./ReservationForm";
 
 /**
- * Mobile video decision (brief: "decide y documenta"): below 640px we mount
- * only the static poster, never the <video> element — no bytes requested at
- * all. Phones on airport wifi/cellular shouldn't pay for a 14s loop before
- * they've even seen the reservation form. From 640px up we mount <video>,
- * using the lighter 720x720 encode up to 1024px and the full 1080x1080
- * encode above that, since a laptop/desktop connection can afford it and
- * the video occupies more screen real estate there.
+ * Mobile/tablet imagery decision: below the 1024px desktop breakpoint we
+ * show a static photo (the client's designated hero-mobile.jpg) instead of
+ * the video — no video bytes requested at all below desktop. Phones and
+ * tablets on airport wifi/cellular shouldn't pay for a 14s loop before
+ * they've even seen the reservation form, and desktop is where the video
+ * occupies the most screen real estate anyway.
  */
-function useHeroVideoTier() {
-  const [tier, setTier] = useState<"poster" | "mobile" | "desktop">("poster");
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
-    const mqMobile = window.matchMedia("(min-width: 640px)");
-    const mqDesktop = window.matchMedia("(min-width: 1024px)");
-    const update = () => {
-      if (mqDesktop.matches) setTier("desktop");
-      else if (mqMobile.matches) setTier("mobile");
-      else setTier("poster");
-    };
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const update = () => setIsDesktop(mq.matches);
     update();
-    mqMobile.addEventListener("change", update);
-    mqDesktop.addEventListener("change", update);
-    return () => {
-      mqMobile.removeEventListener("change", update);
-      mqDesktop.removeEventListener("change", update);
-    };
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
   }, []);
 
-  return tier;
+  return isDesktop;
 }
 
 export function Hero() {
   const t = useBi();
-  const tier = useHeroVideoTier();
-  const poster = withBasePath("/video/hero-poster.jpg");
+  const isDesktop = useIsDesktop();
 
   return (
     <section className="relative">
       <div className="flex flex-col lg:min-h-[calc(100vh-72px)] lg:flex-row">
         {/* Imagery Zone */}
         <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-video lg:aspect-auto lg:w-[52%]">
-          {tier === "poster" ? (
-            <Image
-              src={poster}
-              alt=""
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
-          ) : (
+          {isDesktop ? (
             <video
               className="absolute inset-0 h-full w-full object-cover"
               autoPlay
               muted
               loop
               playsInline
-              poster={poster}
-              key={tier}
+              poster={withBasePath("/video/hero-poster.jpg")}
             >
-              <source
-                src={withBasePath(
-                  tier === "desktop" ? "/video/hero-loop.mp4" : "/video/hero-loop-mobile.mp4",
-                )}
-                type="video/mp4"
-              />
+              <source src={withBasePath("/video/hero-loop.mp4")} type="video/mp4" />
             </video>
+          ) : (
+            <Image
+              src={withBasePath("/photos/hero-mobile.jpg")}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-navy/40 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-navy/10" />
         </div>
