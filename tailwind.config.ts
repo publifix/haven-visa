@@ -13,6 +13,7 @@ const config: Config = {
         foreground: "#FAFAF9",
         muted: "#78716C",
         border: "rgba(250, 250, 249, 0.12)",
+        "visa-navy": "#021E4C",
       },
       fontFamily: {
         display: ["var(--font-cormorant)", "serif"],

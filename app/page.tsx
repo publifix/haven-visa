@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
+import { withBasePath } from "@/lib/base-path";
 
 type Lang = "es" | "en";
 
@@ -21,7 +23,7 @@ const copy: Record<
     badge: "Próximamente",
     tagline: "Un refugio para quienes viajan distinto.",
     location: "VIP Lounge · Ciudad de México",
-    exclusive: "Exclusivo para tarjetahabientes VISA Infinite",
+    exclusive: "Exclusivo para tarjetahabientes",
     note: "Estamos preparando la experiencia. El sitio estará listo muy pronto.",
     switchLabel: "English",
   },
@@ -30,7 +32,7 @@ const copy: Record<
     badge: "Coming Soon",
     tagline: "A refuge for those who travel differently.",
     location: "VIP Lounge · Mexico City",
-    exclusive: "Exclusively for VISA Infinite cardholders",
+    exclusive: "Exclusively for cardholders",
     note: "We're crafting the experience. The site will be ready very soon.",
     switchLabel: "Español",
   },
@@ -61,15 +63,19 @@ export default function Home() {
       </div>
 
       {/* centerpiece */}
-      <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-8 text-center">
+      <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-7 text-center">
+        <Image
+          src={withBasePath("/brand/gle-emblem-white.png")}
+          alt="The Grand Lounge Elite"
+          width={388}
+          height={500}
+          priority
+          className="h-16 w-auto sm:h-20"
+        />
+
         <p className="text-[0.7rem] font-medium uppercase tracking-widest2 text-muted sm:text-xs">
           {t.network}
         </p>
-
-        {/* placeholder monogram — swap for the real Sala HAVEN mark */}
-        <div className="flex h-20 w-20 items-center justify-center rounded-full border border-accent/60 sm:h-24 sm:w-24">
-          <span className="font-display text-3xl text-accent sm:text-4xl">H</span>
-        </div>
 
         <div className="space-y-3">
           <h1 className="font-display text-5xl font-medium tracking-wide text-foreground sm:text-7xl">
@@ -80,12 +86,27 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="flex flex-col items-center gap-1 text-sm text-foreground/70 sm:text-base">
-          <p>{t.location}</p>
-          <p>{t.exclusive}</p>
+        <p className="text-sm text-foreground/70 sm:text-base">{t.location}</p>
+
+        {/* Visa Infinite partnership lockup */}
+        <div className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-foreground/95 px-6 py-4 shadow-[0_0_40px_rgba(0,0,0,0.35)]">
+          <p className="text-[0.65rem] font-medium uppercase tracking-widest text-visa-navy/70 sm:text-xs">
+            {t.exclusive}
+          </p>
+          <Image
+            src={withBasePath("/brand/visa-logo.png")}
+            alt="Visa"
+            width={659}
+            height={202}
+            className="h-6 w-auto sm:h-7"
+          />
+          <div className="h-px w-16 bg-visa-navy/20" />
+          <p className="text-[0.6rem] font-semibold uppercase tracking-widest2 text-visa-navy sm:text-[0.65rem]">
+            Infinite
+          </p>
         </div>
 
-        <span className="mt-2 rounded-full border border-accent/50 px-5 py-2 text-[0.65rem] font-semibold uppercase tracking-widest2 text-accent sm:text-xs">
+        <span className="mt-1 rounded-full border border-accent/50 px-5 py-2 text-[0.65rem] font-semibold uppercase tracking-widest2 text-accent sm:text-xs">
           {t.badge}
         </span>
 
