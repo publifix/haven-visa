@@ -22,9 +22,9 @@ export function Header() {
             width={659}
             height={202}
             priority
-            className="h-5 w-auto shrink-0 sm:h-6"
+            className="h-7 w-auto shrink-0"
           />
-          <div aria-hidden="true" className="h-6 w-px shrink-0 bg-white/20 sm:h-7" />
+          <div aria-hidden="true" className="h-7 w-px shrink-0 bg-white/20" />
           <div className="flex min-w-0 items-center gap-2">
             <Image
               src={withBasePath("/brand/gle-emblem-white.png")}

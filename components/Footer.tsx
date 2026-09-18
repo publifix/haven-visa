@@ -32,9 +32,9 @@ export function Footer() {
             alt="Visa"
             width={659}
             height={202}
-            className="h-5 w-auto"
+            className="h-7 w-auto"
           />
-          <div aria-hidden="true" className="h-6 w-px bg-white/20" />
+          <div aria-hidden="true" className="h-7 w-px bg-white/20" />
           <Image
             src={withBasePath("/brand/gle-emblem-white.png")}
             alt="The Grand Lounge Elite"
