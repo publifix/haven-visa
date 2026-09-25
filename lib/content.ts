@@ -10,29 +10,29 @@ export const hero = {
     en: "Enjoy Sala Haven as part of your VISA Infinite benefits",
   } satisfies Bi,
   subheadline: {
-    es: "Acceso exclusivo para tarjetahabientes Visa Infinite en la Terminal 1 del Aeropuerto Internacional de la Ciudad de México.",
-    en: "Exclusive access for Visa Infinite cardholders at Terminal 1 of Mexico City International Airport.",
+    es: "Acceso exclusivo para tarjetahabientes Visa Infinite con tarjetas emitidas en México, disponible en la Terminal 1 del Aeropuerto Internacional de la Ciudad de México.",
+    en: "Exclusive access for Visa Infinite cardholders with cards issued in Mexico, available at Terminal 1 of Mexico City International Airport.",
   } satisfies Bi,
 };
 
 export const form = {
   accessMethodLabel: { es: "Método de acceso", en: "Access method" } satisfies Bi,
   accessMethodValue: {
-    es: "Tarjeta Visa Infinite (acceso exclusivo)",
-    en: "Visa Infinite Card (exclusive access)",
+    es: "Tarjeta Visa Infinite emitida en México",
+    en: "Visa Infinite Card issued in Mexico",
   } satisfies Bi,
   travelDateLabel: { es: "Fecha de viaje *", en: "Travel date *" } satisfies Bi,
-  travelDatePlaceholder: { es: "Selecciona una fecha", en: "Select a date" } satisfies Bi,
+  travelDatePlaceholder: { es: "Seleccione una fecha", en: "Select a date" } satisfies Bi,
   timeLabel: { es: "Hora de reservación *", en: "Reservation time *" } satisfies Bi,
-  timePlaceholder: { es: "Selecciona horario", en: "Select a time" } satisfies Bi,
+  timePlaceholder: { es: "Seleccione horario", en: "Select a time" } satisfies Bi,
   guestsLabel: { es: "Número de huéspedes *", en: "Number of guests *" } satisfies Bi,
-  guestsPlaceholder: { es: "Selecciona", en: "Select" } satisfies Bi,
+  guestsPlaceholder: { es: "Seleccione", en: "Select" } satisfies Bi,
   fullNameLabel: { es: "Nombre completo *", en: "Full name *" } satisfies Bi,
   phoneLabel: { es: "Teléfono *", en: "Phone number *" } satisfies Bi,
   emailLabel: { es: "Email *", en: "Email *" } satisfies Bi,
   confirmEmailLabel: { es: "Confirmar email *", en: "Confirm email *" } satisfies Bi,
   airlineLabel: { es: "Aerolínea *", en: "Airline *" } satisfies Bi,
-  airlinePlaceholder: { es: "Selecciona aerolínea", en: "Select airline" } satisfies Bi,
+  airlinePlaceholder: { es: "Seleccione aerolínea", en: "Select airline" } satisfies Bi,
   flightNumberLabel: { es: "Número de vuelo *", en: "Flight number *" } satisfies Bi,
   celebratingAccordion: {
     es: "¿Celebra algo en especial?",
@@ -71,8 +71,8 @@ export const celebrationOccasions: { key: string; label: Bi }[] = [
 export const howItWorks = {
   eyebrow: { es: "Cómo funciona", en: "How it works" } satisfies Bi,
   headline: {
-    es: "Tres pasos, sin fricción",
-    en: "Three steps, without friction",
+    es: "Tres pasos sin complicaciones",
+    en: "Enjoy Sala Haven in three steps.",
   } satisfies Bi,
   steps: [
     {
@@ -106,25 +106,21 @@ export type ServiceIconName =
   | "UtensilsCrossed"
   | "Wine"
   | "Sparkles"
-  | "Coffee"
-  | "Beer"
   | "GlassWater"
-  | "CarFront"
   | "ShowerHead"
   | "Footprints"
   | "Luggage"
   | "MonitorPlay"
-  | "ConciergeBell"
   | "PlaneTakeoff";
 
 export const servicesIntro = {
   eyebrow: { es: "Servicios", en: "Services" } satisfies Bi,
   headline: {
-    es: "Descubre todo lo que te espera en Sala Haven",
+    es: "Descubra todo lo que le espera en Sala Haven",
     en: "Discover everything waiting for you at Sala Haven",
   } satisfies Bi,
   subheadline: {
-    es: "Servicios exclusivos y comodidad premium antes de tu vuelo en la Terminal 1 del Aeropuerto Internacional de la Ciudad de México.",
+    es: "Servicios exclusivos y comodidad premium antes de su vuelo en la Terminal 1 del Aeropuerto Internacional de la Ciudad de México.",
     en: "Exclusive services and premium comfort before your flight at Terminal 1 of Mexico City International Airport.",
   } satisfies Bi,
 };
@@ -155,35 +151,11 @@ export const services: { icon: ServiceIconName; title: Bi; description: Bi }[] =
     },
   },
   {
-    icon: "Coffee",
-    title: { es: "Café artesanal", en: "Artisanal Coffee" },
-    description: {
-      es: "Deguste café de origen cuidadosamente preparado, ideal para los amantes de los sabores auténticos.",
-      en: "Savor carefully prepared single-origin coffee, ideal for lovers of authentic flavor.",
-    },
-  },
-  {
-    icon: "Beer",
-    title: { es: "Cervezas artesanales", en: "Craft Beers" },
-    description: {
-      es: "Disfrute de una selección de cervezas artesanales especialmente elegidas para complementar su experiencia VIP.",
-      en: "Enjoy a selection of craft beers specially chosen to complement your VIP experience.",
-    },
-  },
-  {
     icon: "GlassWater",
-    title: { es: "Bebidas Premium", en: "Premium Beverages" },
+    title: { es: "Bebidas", en: "Beverages" },
     description: {
-      es: "Saboree una amplia variedad de bebidas premium, que incluyen licores exclusivos y cócteles preparados al momento.",
-      en: "Savor a wide variety of premium beverages, including exclusive spirits and freshly made cocktails.",
-    },
-  },
-  {
-    icon: "CarFront",
-    title: { es: "Carrito de golf", en: "Golf Cart Transfer" },
-    description: {
-      es: "Facilitamos su traslado dentro del aeropuerto con un carrito de golf, pensado para ofrecerle mayor comodidad y rapidez.",
-      en: "We make getting around the airport easy with a golf cart service, designed for greater comfort and speed.",
+      es: "Saboree una amplia variedad de bebidas, que incluyen licores exclusivos y cócteles preparados al momento.",
+      en: "Savor a wide variety of beverages, including exclusive spirits and freshly made cocktails.",
     },
   },
   {
@@ -219,14 +191,6 @@ export const services: { icon: ServiceIconName; title: Bi; description: Bi }[] =
     },
   },
   {
-    icon: "ConciergeBell",
-    title: { es: "Concierge", en: "Concierge" },
-    description: {
-      es: "Nuestro equipo de concierge está a su disposición para asistirle con cualquier solicitud o información que necesite.",
-      en: "Our concierge team is available to assist you with any request or information you may need.",
-    },
-  },
-  {
     icon: "PlaneTakeoff",
     title: { es: "Información de Vuelos", en: "Flight Information" },
     description: {
@@ -238,13 +202,13 @@ export const services: { icon: ServiceIconName; title: Bi; description: Bi }[] =
 
 export const about = {
   headline: {
-    es: "Sala HAVEN (VISA): elegancia y hospitalidad exclusiva para tarjetahabientes Visa Infinite",
-    en: "Sala HAVEN (VISA): exclusive elegance and hospitality for Visa Infinite cardholders",
+    es: "Sala HAVEN: elegancia y hospitalidad exclusiva para tarjetahabientes Visa Infinite",
+    en: "Sala HAVEN: exclusive elegance and hospitality for Visa Infinite cardholders",
   } satisfies Bi,
   paragraphs: [
     {
-      es: "Ubicada estratégicamente en la Terminal 1 del Aeropuerto Internacional de la Ciudad de México, frente al área de Duty Free en Sala H, Sala HAVEN (VISA) recibe de manera exclusiva a tarjetahabientes Visa Infinite en un entorno diseñado para brindar confort, privacidad y servicio excepcional antes de su vuelo.",
-      en: "Strategically located at Terminal 1 of Mexico City International Airport, facing the Duty Free area in Gate H, Sala HAVEN (VISA) welcomes Visa Infinite cardholders exclusively in an environment designed to offer comfort, privacy, and exceptional service before their flight.",
+      es: "Ubicada estratégicamente en la Terminal 1 del Aeropuerto Internacional de la Ciudad de México, frente al área de Duty Free en Sala H, Sala HAVEN recibe de manera exclusiva a tarjetahabientes Visa Infinite en un entorno diseñado para brindar confort, privacidad y servicio excepcional antes de su vuelo.",
+      en: "Strategically located at Terminal 1 of Mexico City International Airport, facing the Duty Free area in Gate H, Sala HAVEN welcomes Visa Infinite cardholders exclusively in an environment designed to offer comfort, privacy, and exceptional service before their flight.",
     },
     {
       es: "El espacio combina una atmósfera sofisticada con un diseño cuidadosamente curado, ideal tanto para relajarse como para sostener reuniones en un ambiente reservado y elegante. Cada elemento está pensado para ofrecer tranquilidad, discreción y atención personalizada.",
@@ -265,12 +229,12 @@ export const experiencias = {
   } satisfies Bi,
   paragraphs: [
     {
-      es: "En Sala HAVEN (VISA), cada visita está pensada para convertirse en un momento memorable. Los tarjetahabientes Visa Infinite disfrutan de manera exclusiva experiencias que elevan su estancia antes de volar, como selectas catas de mezcal, espacios privados para relajarse con total confort, resguardo de equipaje para mayor tranquilidad, una cuidada selección de alimentos y bebidas premium, y traslado a la puerta de embarque en carrito de golf.",
-      en: "At Sala HAVEN (VISA), every visit is designed to become a memorable moment. Visa Infinite cardholders exclusively enjoy experiences that elevate their time before flying, such as curated mezcal tastings, private spaces to relax in total comfort, luggage safekeeping for extra peace of mind, a thoughtfully selected menu of premium food and beverages, and golf cart transfer to the boarding gate.",
+      es: "En Sala HAVEN, cada visita está pensada para convertirse en un momento memorable. Los tarjetahabientes Visa Infinite disfrutan de manera exclusiva experiencias que elevan su estancia antes de volar, como espacios privados para relajarse con total confort, resguardo de equipaje para mayor tranquilidad, y una cuidada selección de alimentos y bebidas premium.",
+      en: "At Sala HAVEN, every visit is designed to become a memorable moment. Visa Infinite cardholders exclusively enjoy experiences that elevate their time before flying, such as private spaces to relax in total comfort, luggage safekeeping for extra peace of mind, and a thoughtfully selected menu of premium food and beverages.",
     },
     {
-      es: "Además, Sala HAVEN (VISA) es el lugar ideal para celebrar ocasiones especiales. Cumpleaños, aniversarios, lunas de miel, Día de las Madres, Día del Padre, graduaciones, despedidas o compromisos pueden transformarse en momentos inolvidables gracias a un servicio personalizado y atención dedicada en cada detalle.",
-      en: "Sala HAVEN (VISA) is also the ideal place to celebrate special occasions. Birthdays, anniversaries, honeymoons, Mother's Day, Father's Day, graduations, farewells, or engagements can become unforgettable moments thanks to personalized service and dedicated attention to every detail.",
+      es: "Además, Sala HAVEN es el lugar ideal para celebrar ocasiones especiales. Cumpleaños, aniversarios, lunas de miel, Día de las Madres, Día del Padre, graduaciones, despedidas o compromisos pueden transformarse en momentos inolvidables gracias a un servicio personalizado y atención dedicada en cada detalle.",
+      en: "Sala HAVEN is also the ideal place to celebrate special occasions. Birthdays, anniversaries, honeymoons, Mother's Day, Father's Day, graduations, farewells, or engagements can become unforgettable moments thanks to personalized service and dedicated attention to every detail.",
     },
   ] satisfies Bi[],
   button: { es: "Reservar Acceso", en: "Book Access" } satisfies Bi,
@@ -278,10 +242,10 @@ export const experiencias = {
 
 export const faq: { question: Bi; answer: Bi }[] = [
   {
-    question: { es: "¿Quién puede acceder a Sala HAVEN (VISA)?", en: "Who can access Sala HAVEN (VISA)?" },
+    question: { es: "¿Quién puede acceder a Sala HAVEN?", en: "Who can access Sala HAVEN?" },
     answer: {
-      es: "El acceso es exclusivo para el tarjetahabiente que presente su tarjeta Visa Infinite vigente, junto con una identificación oficial y pase de abordar del mismo día.",
-      en: "Access is exclusive to cardholders who present a valid Visa Infinite card, along with official identification and a same-day boarding pass.",
+      es: "El acceso es exclusivo para el tarjetahabiente que presente su tarjeta Visa Infinite emitida en México y vigente, junto con una identificación oficial y pase de abordar del mismo día.",
+      en: "Access is exclusive to cardholders who present a valid Visa Infinite card issued in Mexico, along with official identification and a same-day boarding pass.",
     },
   },
   {
@@ -332,33 +296,33 @@ export const faq: { question: Bi; answer: Bi }[] = [
     },
   },
   {
-    question: { es: "¿Dónde se ubica Sala HAVEN (VISA)?", en: "Where is Sala HAVEN (VISA) located?" },
+    question: { es: "¿Dónde se ubica Sala HAVEN?", en: "Where is Sala HAVEN located?" },
     answer: {
-      es: "Sala HAVEN (VISA) se encuentra en la Terminal 1 del Aeropuerto Internacional de la Ciudad de México, después de los filtros de seguridad y migración.",
-      en: "Sala HAVEN (VISA) is located at Terminal 1 of Mexico City International Airport, past the security and immigration checkpoints.",
+      es: "Sala HAVEN se encuentra en la Terminal 1 del Aeropuerto Internacional de la Ciudad de México, después de los filtros de seguridad y migración.",
+      en: "Sala HAVEN is located at Terminal 1 of Mexico City International Airport, past the security and immigration checkpoints.",
     },
   },
   {
     question: { es: "¿Cuál es el horario de operación?", en: "What are the hours of operation?" },
     answer: {
-      es: "Sala HAVEN (VISA) opera de lunes a domingo, en un horario de 05:00 hrs a 21:00 hrs.",
-      en: "Sala HAVEN (VISA) operates Monday through Sunday, from 5:00 AM to 9:00 PM.",
+      es: "Sala HAVEN opera de lunes a domingo, en un horario de 05:00 hrs a 21:00 hrs.",
+      en: "Sala HAVEN operates Monday through Sunday, from 5:00 AM to 9:00 PM.",
     },
   },
   {
     question: { es: "¿Existe un límite de permanencia?", en: "Is there a maximum stay limit?" },
     answer: {
-      es: "La estancia máxima es de hasta 2 horas por ingreso. Si el pasajero desea permanecer más tiempo, cada periodo adicional de 2 horas se considerará como un nuevo acceso y se descontará de los accesos disponibles.",
-      en: "The maximum stay is up to 2 hours per visit. If the passenger wishes to stay longer, each additional 2-hour period will count as a new visit and will be deducted from the available visits.",
+      es: "La estancia máxima es de hasta 3 horas por ingreso. Si el pasajero desea permanecer más tiempo, cada periodo adicional de 3 horas se considerará como un nuevo acceso y se descontará de los accesos disponibles.",
+      en: "The maximum stay is up to 3 hours per visit. If the passenger wishes to stay longer, each additional 3-hour period will count as a new visit and will be deducted from the available visits.",
     },
   },
   {
     // Proposed answer from the copy deck's [A CONFIRMAR] #2 — inferred from
     // the footer's legal line. Flag to the client for final sign-off.
-    question: { es: "¿Quién opera Sala HAVEN (VISA)?", en: "Who operates Sala HAVEN (VISA)?" },
+    question: { es: "¿Quién opera Sala HAVEN?", en: "Who operates Sala HAVEN?" },
     answer: {
-      es: "Sala HAVEN (VISA) es operada por The Grand Lounge Elite, empresa especializada en la operación de salas premium en aeropuertos.",
-      en: "Sala HAVEN (VISA) is operated by The Grand Lounge Elite, a company specialized in operating premium airport lounges.",
+      es: "Sala HAVEN es operada por The Grand Lounge Elite, empresa especializada en la operación de salas premium en aeropuertos.",
+      en: "Sala HAVEN is operated by The Grand Lounge Elite, a company specialized in operating premium airport lounges.",
     },
   },
 ];
@@ -366,7 +330,7 @@ export const faq: { question: Bi; answer: Bi }[] = [
 export const gallery = {
   hoursHeadline: { es: "Horarios de atención", en: "Hours of operation" } satisfies Bi,
   hoursText: {
-    es: "Servicio disponible 5:00 a 21:00 horas, de Lunes a Domingo",
+    es: "Servicio disponible de 05:00 a 21:00 horas, de lunes a domingo",
     en: "Service available 5:00 AM to 9:00 PM, Monday through Sunday",
   } satisfies Bi,
   button: { es: "Reservar Acceso", en: "Book Access" } satisfies Bi,
@@ -390,8 +354,8 @@ export const gallery = {
 export const footer = {
   followUs: { es: "SÍGUENOS", en: "FOLLOW US" } satisfies Bi,
   legal: {
-    es: "Sala HAVEN (VISA) es operada por The Grand Lounge Elite.",
-    en: "Sala HAVEN (VISA) is operated by The Grand Lounge Elite.",
+    es: "Sala HAVEN es operada por The Grand Lounge Elite.",
+    en: "Sala HAVEN is operated by The Grand Lounge Elite.",
   } satisfies Bi,
   privacy: { es: "Aviso de Privacidad", en: "Privacy Notice" } satisfies Bi,
   terms: { es: "Términos y Condiciones", en: "Terms and Conditions" } satisfies Bi,

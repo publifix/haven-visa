@@ -21,8 +21,8 @@ export default function Home() {
         <ImageTextSection
           headline={about.headline}
           paragraphs={about.paragraphs}
-          photoSrc="/photos/about-model.jpg"
-          photoAlt="Invitada disfrutando Sala HAVEN"
+          photoSrc="/photos/about-bar-service.jpg"
+          photoAlt="Bartender preparando un cóctel para una invitada en Sala HAVEN"
           imageSide="left"
           background="white"
         />
