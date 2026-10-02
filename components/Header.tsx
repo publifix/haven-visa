@@ -30,10 +30,6 @@ export function Header() {
             priority
             className="h-6 w-auto shrink-0"
           />
-          <div aria-hidden="true" className="h-7 w-px shrink-0 bg-white/20" />
-          <span className="hidden truncate text-xs font-medium uppercase tracking-eyebrow text-gray-light sm:block">
-            The Grand Lounge Elite
-          </span>
         </div>
 
         <button

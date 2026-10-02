@@ -353,10 +353,6 @@ export const gallery = {
 
 export const footer = {
   followUs: { es: "SÍGUENOS", en: "FOLLOW US" } satisfies Bi,
-  legal: {
-    es: "Sala HAVEN es operada por The Grand Lounge Elite.",
-    en: "Sala HAVEN is operated by The Grand Lounge Elite.",
-  } satisfies Bi,
   privacy: { es: "Aviso de Privacidad", en: "Privacy Notice" } satisfies Bi,
   terms: { es: "Términos y Condiciones", en: "Terms and Conditions" } satisfies Bi,
   copyright: {

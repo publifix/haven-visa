@@ -52,8 +52,6 @@ export function Footer() {
           </div>
         </div>
 
-        <p className="max-w-md text-xs leading-relaxed text-gray-light">{t(footer.legal)}</p>
-
         <div className="flex items-center gap-6 text-xs text-gray-light">
           <a href="#" className="transition-colors duration-200 hover:text-copper-1">
             {t(footer.privacy)}
