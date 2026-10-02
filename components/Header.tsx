@@ -23,26 +23,17 @@ export function Header() {
       >
         <div className="flex min-w-0 items-center gap-3 sm:gap-5">
           <Image
-            src={withBasePath("/brand/visa-logo-white.png")}
-            alt="Visa"
-            width={659}
-            height={202}
+            src={withBasePath("/brand/visa-infinite-logo.svg")}
+            alt="Visa Infinite"
+            width={433}
+            height={72}
             priority
-            className="h-7 w-auto shrink-0"
+            className="h-6 w-auto shrink-0"
           />
           <div aria-hidden="true" className="h-7 w-px shrink-0 bg-white/20" />
-          <div className="flex min-w-0 items-center gap-2">
-            <Image
-              src={withBasePath("/brand/gle-emblem-white.png")}
-              alt=""
-              width={388}
-              height={500}
-              className="h-6 w-auto shrink-0 sm:h-8"
-            />
-            <span className="hidden truncate text-xs font-medium uppercase tracking-eyebrow text-gray-light sm:block">
-              The Grand Lounge Elite
-            </span>
-          </div>
+          <span className="hidden truncate text-xs font-medium uppercase tracking-eyebrow text-gray-light sm:block">
+            The Grand Lounge Elite
+          </span>
         </div>
 
         <button

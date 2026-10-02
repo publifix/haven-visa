@@ -26,23 +26,13 @@ export function Footer() {
   return (
     <footer className="border-t border-white/10 bg-navy px-grid py-12">
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-8 text-center">
-        <div className="flex items-center gap-5">
-          <Image
-            src={withBasePath("/brand/visa-logo-white.png")}
-            alt="Visa"
-            width={659}
-            height={202}
-            className="h-7 w-auto"
-          />
-          <div aria-hidden="true" className="h-7 w-px bg-white/20" />
-          <Image
-            src={withBasePath("/brand/gle-emblem-white.png")}
-            alt="The Grand Lounge Elite"
-            width={388}
-            height={500}
-            className="h-7 w-auto"
-          />
-        </div>
+        <Image
+          src={withBasePath("/brand/visa-infinite-logo.svg")}
+          alt="Visa Infinite"
+          width={433}
+          height={72}
+          className="h-9 w-auto"
+        />
 
         <div>
           <p className="eyebrow text-gray-light">{t(footer.followUs)}</p>
