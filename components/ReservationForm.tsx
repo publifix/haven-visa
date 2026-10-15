@@ -74,22 +74,31 @@ export function ReservationForm() {
       return;
     }
 
+    const reservation = {
+      travel_date: travelDate,
+      reservation_time: time,
+      guests: Number(guests),
+      full_name: fullName,
+      phone,
+      email,
+      airline,
+      flight_number: flightNumber,
+      experience: null,
+      celebration: celebrations.length ? celebrations.join(", ") : null,
+      language: lang,
+    };
+
     try {
-      const { error } = await insertReservation({
-        travel_date: travelDate,
-        reservation_time: time,
-        guests: Number(guests),
-        full_name: fullName,
-        phone,
-        email,
-        airline,
-        flight_number: flightNumber,
-        experience: null,
-        celebration: celebrations.length ? celebrations.join(", ") : null,
-        language: lang,
-      });
+      const { error } = await insertReservation(reservation);
       if (error) throw error;
       setStatus("success");
+      // Confirmation emails are a nice-to-have on top of the reservation
+      // itself, which is already saved — never fail the submission over it.
+      fetch("/api/send-confirmation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reservation }),
+      }).catch(() => {});
     } catch {
       setStatus("error");
     }
