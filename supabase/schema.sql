@@ -1,6 +1,6 @@
--- Sala HAVEN reservations table.
--- Run this once against the Supabase project once it exists
--- (SQL editor, or `supabase db push` if you adopt the CLI/migrations flow).
+-- Sala HAVEN reservations table — full schema for a fresh project.
+-- An existing project is brought up to date with the files in
+-- supabase/migrations/ instead.
 
 create table if not exists public.reservations (
   id uuid primary key default gen_random_uuid(),
@@ -21,19 +21,17 @@ create table if not exists public.reservations (
   experience text, -- from the "Add an Experience" accordion, optional
   celebration text, -- from the "Celebrating something special?" accordion, optional
 
-  language text not null check (language in ('es', 'en'))
+  language text not null check (language in ('es', 'en')),
+
+  -- Outcome of forwarding the reservation to TGLE's external_reservation API.
+  tgle_sync_status text not null default 'pending'
+    check (tgle_sync_status in ('pending', 'synced', 'failed', 'skipped')),
+  tgle_reservation_id text,
+  tgle_sync_error text,
+  tgle_synced_at timestamptz
 );
 
+-- RLS on with no policies: only the server (service role key, which
+-- bypasses RLS) can read or write reservations. The public anon key has no
+-- access at all.
 alter table public.reservations enable row level security;
-
--- Allow the public anon key to insert reservations (the form runs
--- client-side, unauthenticated) but never read others' data back.
-create policy "Anyone can submit a reservation"
-  on public.reservations
-  for insert
-  to anon
-  with check (true);
-
--- No select/update/delete policy for anon: reservations are managed from
--- the Supabase dashboard or a service-role backend, never read back
--- client-side.

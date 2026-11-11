@@ -42,7 +42,7 @@ function formatTime(hhmmss: string) {
   return hhmmss.slice(0, 5);
 }
 
-function celebrationLabels(value: string, lang: Lang) {
+export function celebrationLabels(value: string, lang: Lang) {
   return value
     .split(",")
     .map((key) => key.trim())
@@ -217,7 +217,32 @@ export function guestConfirmationEmail(
   };
 }
 
-export function staffNotificationEmail(reservation: ReservationInsert, assetBaseUrl: string): EmailContent {
+export type TgleSyncSummary =
+  | { status: "synced"; reservationId: string }
+  | { status: "failed"; error: string }
+  | { status: "skipped" };
+
+function tgleStatusBlock(sync: TgleSyncSummary) {
+  if (sync.status === "synced") {
+    return `<p style="margin:0 0 4px;font-size:14px;color:${GRAY_INK};">Registrada automáticamente en el sistema de reservaciones de TGLE${
+      sync.reservationId ? ` (ID ${esc(sync.reservationId)})` : ""
+    }.</p>`;
+  }
+  if (sync.status === "failed") {
+    return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 4px;border-left:4px solid ${COPPER_3};background:#FBF3EE;">
+      <tr><td style="padding:14px 18px;font-family:${FONT};font-size:14px;line-height:1.5;color:${NAVY};">
+        <strong>No se pudo registrar en el sistema de TGLE.</strong> Capture esta reservación manualmente.
+      </td></tr>
+    </table>`;
+  }
+  return `<p style="margin:0 0 4px;font-size:14px;color:${GRAY_INK};">La integración con el sistema de TGLE aún no está activa: capture esta reservación manualmente.</p>`;
+}
+
+export function staffNotificationEmail(
+  reservation: ReservationInsert,
+  assetBaseUrl: string,
+  sync: TgleSyncSummary,
+): EmailContent {
   const date = formatDate(reservation.travel_date, "es");
   const time = formatTime(reservation.reservation_time);
   const phone = esc(reservation.phone);
@@ -237,13 +262,14 @@ export function staffNotificationEmail(reservation: ReservationInsert, assetBase
   rows.push(["Idioma del huésped", reservation.language === "es" ? "Español" : "Inglés"]);
 
   const body = `
-    <p style="margin:0;color:${GRAY_INK};">Se recibió una nueva reservación desde la landing page de Sala HAVEN.</p>
+    <p style="margin:0 0 16px;color:${GRAY_INK};">Se recibió una nueva reservación desde la landing page de Sala HAVEN.</p>
+    ${tgleStatusBlock(sync)}
     ${detailsCard(rows)}
     <p style="margin:0;font-size:13px;color:${GRAY_MEDIUM};">Método de acceso: ${esc(form.accessMethodValue.es)} (único método aceptado).</p>
   `;
 
   return {
-    subject: `Nueva reservación — ${reservation.full_name} — ${date}, ${time}`,
+    subject: `${sync.status === "synced" ? "" : "[Capturar manualmente] "}Nueva reservación — ${reservation.full_name} — ${date}, ${time}`,
     html: layout({
       assetBaseUrl,
       lang: "es",

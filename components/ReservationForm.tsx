@@ -3,7 +3,7 @@
 import { useMemo, useState, type FormEvent } from "react";
 import { useBi, useLanguage } from "@/lib/i18n";
 import { form as t, airlines } from "@/lib/content";
-import { insertReservation, isSupabaseConfigured } from "@/lib/supabase";
+import { isSupabaseConfigured } from "@/lib/supabase";
 import { DateField } from "./reservation/DateField";
 import { TimeField } from "./reservation/TimeField";
 import { Listbox } from "./reservation/Listbox";
@@ -89,16 +89,12 @@ export function ReservationForm() {
     };
 
     try {
-      const { error } = await insertReservation(reservation);
-      if (error) throw error;
-      setStatus("success");
-      // Confirmation emails are a nice-to-have on top of the reservation
-      // itself, which is already saved — never fail the submission over it.
-      fetch("/api/send-confirmation", {
+      const res = await fetch("/api/reservations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ reservation }),
-      }).catch(() => {});
+      });
+      setStatus(res.ok ? "success" : "error");
     } catch {
       setStatus("error");
     }
