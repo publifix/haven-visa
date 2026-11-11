@@ -1,133 +1,257 @@
 import type { ReservationInsert } from "./supabase";
+import { celebrationOccasions, form, howItWorks } from "./content";
 
+type Lang = "es" | "en";
 type EmailContent = { subject: string; html: string };
 
+// Visa Infinite palette (brand guide sec. 2.1/2.2). Email clients can't read
+// CSS variables, so the values are inlined here.
 const NAVY = "#010D36";
-const COPPER = "#B46D40";
+const WHITE = "#FFFFFF";
+const COPPER_1 = "#FFB59C";
+const COPPER_2 = "#B46D40";
+const COPPER_3 = "#7C360A";
+const GRAY_LIGHT = "#F5F5F7";
+const GRAY_MEDIUM = "#828693";
+const GRAY_INK = "#303A51";
+const DIVIDER = "#E6E7EB";
 
-function formatDate(isoDate: string, locale: "es-MX" | "en-US") {
-  // isoDate is "YYYY-MM-DD"; parse as local (not UTC) so the displayed
-  // date never shifts a day depending on server timezone.
+// Visa Dialect loads only in clients that support web fonts (Apple Mail,
+// iOS); Gmail/Outlook fall back to Arial.
+const FONT = "'Visa Dialect', Arial, Helvetica, sans-serif";
+
+function esc(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function formatDate(isoDate: string, lang: Lang) {
+  // Parse "YYYY-MM-DD" as a local date so it never shifts a day with the
+  // server's timezone.
   const [year, month, day] = isoDate.split("-").map(Number);
-  const date = new Date(year, month - 1, day);
-  return new Intl.DateTimeFormat(locale, { dateStyle: "long" }).format(date);
+  return new Intl.DateTimeFormat(lang === "es" ? "es-MX" : "en-US", { dateStyle: "long" }).format(
+    new Date(year, month - 1, day),
+  );
 }
 
 function formatTime(hhmmss: string) {
-  const [h, m] = hhmmss.split(":");
-  return `${h}:${m}`;
+  return hhmmss.slice(0, 5);
 }
 
-function layout(body: string): string {
+function celebrationLabels(value: string, lang: Lang) {
+  return value
+    .split(",")
+    .map((key) => key.trim())
+    .map((key) => celebrationOccasions.find((o) => o.key === key)?.label[lang] ?? key)
+    .join(", ");
+}
+
+const eyebrowStyle = `font-family:${FONT};font-size:12px;line-height:1;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;`;
+
+function layout(opts: {
+  assetBaseUrl: string;
+  lang: Lang;
+  preheader: string;
+  eyebrow: string;
+  headline: string;
+  body: string;
+  footer: string;
+}) {
+  const { assetBaseUrl, lang, preheader, eyebrow, headline, body, footer } = opts;
   return `<!doctype html>
-<html lang="es">
-  <body style="margin:0;padding:0;background:#F4F4F4;font-family:Arial,Helvetica,sans-serif;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F4F4F4;padding:24px 0;">
-      <tr>
-        <td align="center">
-          <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="background:#FFFFFF;border-radius:8px;overflow:hidden;max-width:560px;width:100%;">
-            <tr>
-              <td style="background:${NAVY};padding:28px 32px;">
-                <span style="color:#FFFFFF;font-size:13px;letter-spacing:2px;text-transform:uppercase;">VISA Infinite</span>
-                <div style="color:#FFFFFF;font-size:22px;font-weight:bold;margin-top:6px;">Sala HAVEN</div>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding:32px;color:#1A1A1A;font-size:15px;line-height:1.6;">
-                ${body}
-              </td>
-            </tr>
-            <tr>
-              <td style="background:#F4F4F4;padding:18px 32px;color:#8A8A8A;font-size:12px;text-align:center;">
-                Terminal 1 · Aeropuerto Internacional de la Ciudad de México
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-  </body>
+<html lang="${lang}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<style>
+  @font-face { font-family: 'Visa Dialect'; font-weight: 500; src: url('${assetBaseUrl}/fonts/VisaDialect-Medium.woff2') format('woff2'); }
+  @font-face { font-family: 'Visa Dialect'; font-weight: 600; src: url('${assetBaseUrl}/fonts/VisaDialect-Semibold.woff2') format('woff2'); }
+  @media (max-width: 620px) {
+    .px { padding-left: 24px !important; padding-right: 24px !important; }
+    .headline { font-size: 24px !important; }
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background:${GRAY_LIGHT};">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${esc(preheader)}</div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${GRAY_LIGHT};">
+    <tr>
+      <td align="center" style="padding:32px 12px;">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;background:${WHITE};border-radius:12px;overflow:hidden;">
+          <tr>
+            <td class="px" style="background:${NAVY};padding:40px 40px 36px;">
+              <img src="${assetBaseUrl}/brand/visa-infinite-logo-white.png" width="144" height="24" alt="Visa Infinite" style="display:block;border:0;width:144px;height:24px;">
+              <div style="${eyebrowStyle}color:${COPPER_1};margin-top:40px;">${eyebrow}</div>
+              <div class="headline" style="font-family:${FONT};font-size:28px;line-height:1.15;font-weight:500;color:${WHITE};margin-top:12px;">${headline}</div>
+            </td>
+          </tr>
+          <tr>
+            <td style="height:4px;line-height:4px;font-size:0;background-color:${COPPER_2};background-image:linear-gradient(90deg,${COPPER_1} 0%,${COPPER_2} 50%,${COPPER_3} 100%);">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="px" style="padding:36px 40px 40px;font-family:${FONT};font-size:16px;line-height:1.5;font-weight:500;color:${NAVY};">
+              ${body}
+            </td>
+          </tr>
+          <tr>
+            <td class="px" style="background:${NAVY};padding:28px 40px;font-family:${FONT};font-size:12px;line-height:1.5;color:${GRAY_LIGHT};">
+              ${footer}
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
 </html>`;
 }
 
-function detailRow(label: string, value: string): string {
+function detailRow(label: string, value: string, isLast = false) {
+  const border = isLast ? "" : `border-bottom:1px solid ${DIVIDER};`;
   return `<tr>
-    <td style="padding:6px 0;color:#8A8A8A;font-size:13px;width:40%;">${label}</td>
-    <td style="padding:6px 0;color:#1A1A1A;font-size:14px;font-weight:bold;">${value}</td>
+    <td style="padding:14px 0;${border}${eyebrowStyle}font-size:11px;color:${GRAY_MEDIUM};width:42%;vertical-align:top;">${label}</td>
+    <td style="padding:14px 0;${border}font-family:${FONT};font-size:15px;line-height:1.4;font-weight:500;color:${NAVY};vertical-align:top;">${value}</td>
   </tr>`;
 }
 
-function detailsTable(rows: string): string {
-  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:20px 0;border-top:1px solid #EEEEEE;border-bottom:1px solid #EEEEEE;padding:8px 0;">
-    ${rows}
+function detailsCard(rows: [string, string][]) {
+  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid ${COPPER_2};border-radius:10px;margin:24px 0;">
+    <tr><td style="padding:6px 24px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+        ${rows.map(([label, value], i) => detailRow(label, value, i === rows.length - 1)).join("")}
+      </table>
+    </td></tr>
   </table>`;
 }
 
-export function guestConfirmationEmail(
-  reservation: ReservationInsert,
-  lang: "es" | "en",
-): EmailContent {
-  const locale = lang === "es" ? "es-MX" : "en-US";
-  const date = formatDate(reservation.travel_date, locale);
-  const time = formatTime(reservation.reservation_time);
-
-  if (lang === "en") {
-    const body = `
-      <p style="margin:0 0 4px;">Hello ${reservation.full_name},</p>
-      <p style="margin:0 0 16px;">Your reservation at Sala HAVEN has been received. We look forward to welcoming you.</p>
-      ${detailsTable(
-        detailRow("Date", date) +
-          detailRow("Time", time) +
-          detailRow("Guests", String(reservation.guests)) +
-          detailRow("Airline", reservation.airline) +
-          detailRow("Flight", reservation.flight_number) +
-          (reservation.celebration ? detailRow("Celebrating", reservation.celebration) : ""),
-      )}
-      <p style="margin:16px 0 0;color:#8A8A8A;font-size:13px;">Access method: Visa Infinite Card issued in Mexico.</p>
-      <p style="margin:16px 0 0;">See you soon,<br/><span style="color:${COPPER};font-weight:bold;">Sala HAVEN</span></p>
-    `;
-    return { subject: "Your Sala HAVEN reservation is confirmed", html: layout(body) };
-  }
-
-  const body = `
-    <p style="margin:0 0 4px;">Hola ${reservation.full_name},</p>
-    <p style="margin:0 0 16px;">Tu reservación en Sala HAVEN fue recibida. Te esperamos.</p>
-    ${detailsTable(
-      detailRow("Fecha", date) +
-        detailRow("Hora", time) +
-        detailRow("Huéspedes", String(reservation.guests)) +
-        detailRow("Aerolínea", reservation.airline) +
-        detailRow("Vuelo", reservation.flight_number) +
-        (reservation.celebration ? detailRow("Celebración", reservation.celebration) : ""),
-    )}
-    <p style="margin:16px 0 0;color:#8A8A8A;font-size:13px;">Método de acceso: Tarjeta Visa Infinite emitida en México.</p>
-    <p style="margin:16px 0 0;">Nos vemos pronto,<br/><span style="color:${COPPER};font-weight:bold;">Sala HAVEN</span></p>
-  `;
-  return { subject: "Tu reservación en Sala HAVEN está confirmada", html: layout(body) };
+function infoBlock(title: string, text: string) {
+  return `<div style="margin-top:24px;">
+    <div style="${eyebrowStyle}color:${COPPER_2};">${title}</div>
+    <div style="font-family:${FONT};font-size:15px;line-height:1.5;color:${GRAY_INK};margin-top:8px;">${text}</div>
+  </div>`;
 }
 
-export function staffNotificationEmail(reservation: ReservationInsert): EmailContent {
-  const date = formatDate(reservation.travel_date, "es-MX");
-  const time = formatTime(reservation.reservation_time);
+const copy = {
+  es: {
+    subject: "Recibimos su reservación en Sala HAVEN",
+    eyebrow: "Sala HAVEN · Reservación",
+    headline: "Su reservación fue recibida",
+    greeting: (name: string) => `Hola, ${name}.`,
+    intro: "Gracias por reservar en Sala HAVEN. Estos son los detalles de su visita:",
+    date: "Fecha",
+    time: "Hora",
+    guests: "Huéspedes",
+    airline: "Aerolínea",
+    flight: "Vuelo",
+    celebration: "Celebración",
+    access: "Método de acceso",
+    onArrival: "Al llegar",
+    hoursTitle: "Horario",
+    signoff: "Le esperamos,",
+    footer: "Sala HAVEN · Terminal 1, Aeropuerto Internacional de la Ciudad de México",
+  },
+  en: {
+    subject: "We've received your Sala HAVEN reservation",
+    eyebrow: "Sala HAVEN · Reservation",
+    headline: "Your reservation has been received",
+    greeting: (name: string) => `Hello, ${name}.`,
+    intro: "Thank you for booking Sala HAVEN. Here are the details of your visit:",
+    date: "Date",
+    time: "Time",
+    guests: "Guests",
+    airline: "Airline",
+    flight: "Flight",
+    celebration: "Celebrating",
+    access: "Access method",
+    onArrival: "On arrival",
+    hoursTitle: "Hours",
+    signoff: "We look forward to welcoming you,",
+    footer: "Sala HAVEN · Terminal 1, Mexico City International Airport",
+  },
+} as const;
+
+export function guestConfirmationEmail(
+  reservation: ReservationInsert,
+  lang: Lang,
+  assetBaseUrl: string,
+): EmailContent {
+  const t = copy[lang];
+  const date = formatDate(reservation.travel_date, lang);
+
+  const rows: [string, string][] = [
+    [t.date, esc(date)],
+    [t.time, esc(formatTime(reservation.reservation_time))],
+    [t.guests, String(reservation.guests)],
+    [t.airline, esc(reservation.airline)],
+    [t.flight, esc(reservation.flight_number)],
+  ];
+  if (reservation.celebration) rows.push([t.celebration, esc(celebrationLabels(reservation.celebration, lang))]);
+  rows.push([t.access, esc(form.accessMethodValue[lang])]);
 
   const body = `
-    <p style="margin:0 0 16px;">Nueva reservación recibida desde la landing page.</p>
-    ${detailsTable(
-      detailRow("Fecha", date) +
-        detailRow("Hora", time) +
-        detailRow("Huéspedes", String(reservation.guests)) +
-        detailRow("Nombre", reservation.full_name) +
-        detailRow("Teléfono", reservation.phone) +
-        detailRow("Email", reservation.email) +
-        detailRow("Aerolínea", reservation.airline) +
-        detailRow("Vuelo", reservation.flight_number) +
-        (reservation.celebration ? detailRow("Celebración", reservation.celebration) : "") +
-        detailRow("Idioma", reservation.language === "es" ? "Español" : "Inglés"),
-    )}
-    <p style="margin:16px 0 0;color:#8A8A8A;font-size:13px;">Método de acceso: Tarjeta Visa Infinite emitida en México (único método aceptado).</p>
+    <p style="margin:0 0 8px;font-size:18px;">${esc(t.greeting(reservation.full_name))}</p>
+    <p style="margin:0;color:${GRAY_INK};">${t.intro}</p>
+    ${detailsCard(rows)}
+    ${infoBlock(t.onArrival, esc(howItWorks.steps[1].description[lang]))}
+    ${infoBlock(t.hoursTitle, esc(form.hours[lang]))}
+    <p style="margin:32px 0 0;color:${GRAY_INK};">${t.signoff}<br><span style="color:${COPPER_2};font-weight:600;">Sala HAVEN</span></p>
   `;
+
   return {
-    subject: `Nueva reservación — ${reservation.full_name} — ${date}`,
-    html: layout(body),
+    subject: t.subject,
+    html: layout({
+      assetBaseUrl,
+      lang,
+      preheader: `${t.date}: ${date} · ${t.time}: ${formatTime(reservation.reservation_time)}`,
+      eyebrow: t.eyebrow,
+      headline: t.headline,
+      body,
+      footer: t.footer,
+    }),
+  };
+}
+
+export function staffNotificationEmail(reservation: ReservationInsert, assetBaseUrl: string): EmailContent {
+  const date = formatDate(reservation.travel_date, "es");
+  const time = formatTime(reservation.reservation_time);
+  const phone = esc(reservation.phone);
+  const email = esc(reservation.email);
+
+  const rows: [string, string][] = [
+    ["Fecha", esc(date)],
+    ["Hora", esc(time)],
+    ["Huéspedes", String(reservation.guests)],
+    ["Nombre", esc(reservation.full_name)],
+    ["Teléfono", `<a href="tel:${phone}" style="color:${NAVY};">${phone}</a>`],
+    ["Email", `<a href="mailto:${email}" style="color:${NAVY};">${email}</a>`],
+    ["Aerolínea", esc(reservation.airline)],
+    ["Vuelo", esc(reservation.flight_number)],
+  ];
+  if (reservation.celebration) rows.push(["Celebración", esc(celebrationLabels(reservation.celebration, "es"))]);
+  rows.push(["Idioma del huésped", reservation.language === "es" ? "Español" : "Inglés"]);
+
+  const body = `
+    <p style="margin:0;color:${GRAY_INK};">Se recibió una nueva reservación desde la landing page de Sala HAVEN.</p>
+    ${detailsCard(rows)}
+    <p style="margin:0;font-size:13px;color:${GRAY_MEDIUM};">Método de acceso: ${esc(form.accessMethodValue.es)} (único método aceptado).</p>
+  `;
+
+  return {
+    subject: `Nueva reservación — ${reservation.full_name} — ${date}, ${time}`,
+    html: layout({
+      assetBaseUrl,
+      lang: "es",
+      preheader: `${reservation.full_name} · ${date}, ${time} · ${reservation.guests} huésped(es)`,
+      eyebrow: "Notificación interna",
+      headline: "Nueva reservación",
+      body,
+      footer: copy.es.footer,
+    }),
   };
 }
