@@ -17,6 +17,8 @@ export const maxDuration = 30;
 // .env.example.
 const FROM = process.env.RESEND_FROM || "Sala HAVEN <onboarding@resend.dev>";
 const STAFF_EMAIL = process.env.TGLE_STAFF_EMAIL;
+// Where guest replies to the confirmation go; the "from" mailbox may not exist.
+const REPLY_TO = process.env.RESEND_REPLY_TO || undefined;
 
 const MAX_GUESTS = 4;
 
@@ -71,10 +73,27 @@ function tgleNotes(reservation: ReservationInsert) {
 async function sendEmails(reservation: ReservationInsert, assetBaseUrl: string, sync: TgleSyncSummary) {
   if (!resend) return;
   const guest = guestConfirmationEmail(reservation, reservation.language, assetBaseUrl);
-  const sends = [resend.emails.send({ from: FROM, to: reservation.email, subject: guest.subject, html: guest.html })];
+  const sends = [
+    resend.emails.send({
+      from: FROM,
+      to: reservation.email,
+      replyTo: REPLY_TO,
+      subject: guest.subject,
+      html: guest.html,
+    }),
+  ];
   if (STAFF_EMAIL) {
     const staff = staffNotificationEmail(reservation, assetBaseUrl, sync);
-    sends.push(resend.emails.send({ from: FROM, to: STAFF_EMAIL, subject: staff.subject, html: staff.html }));
+    sends.push(
+      resend.emails.send({
+        from: FROM,
+        to: STAFF_EMAIL,
+        // Staff hitting "reply" reaches the guest directly.
+        replyTo: reservation.email,
+        subject: staff.subject,
+        html: staff.html,
+      }),
+    );
   }
   const results = await Promise.allSettled(sends);
   for (const r of results) {
