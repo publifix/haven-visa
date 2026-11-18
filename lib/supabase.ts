@@ -9,7 +9,11 @@ export type ReservationInsert = {
   travel_date: string;
   reservation_time: string;
   guests: number;
+  adult_companions: number;
+  minors: number;
   full_name: string;
+  first_names: string;
+  last_names: string;
   phone: string;
   email: string;
   airline: string;

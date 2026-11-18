@@ -50,6 +50,29 @@ export function celebrationLabels(value: string, lang: Lang) {
     .join(", ");
 }
 
+// e.g. "3 personas: titular, 1 acompañante adulto y 1 menor de 12 años"
+export function partyBreakdown(r: Pick<ReservationInsert, "guests" | "adult_companions" | "minors">, lang: Lang) {
+  const es = lang === "es";
+  const parts = [es ? "titular" : "cardholder"];
+  if (r.adult_companions > 0) {
+    parts.push(
+      es
+        ? `${r.adult_companions} ${r.adult_companions === 1 ? "acompañante adulto" : "acompañantes adultos"}`
+        : `${r.adult_companions} adult ${r.adult_companions === 1 ? "companion" : "companions"}`,
+    );
+  }
+  if (r.minors > 0) {
+    parts.push(
+      es
+        ? `${r.minors} ${r.minors === 1 ? "menor" : "menores"} de 12 años`
+        : `${r.minors} ${r.minors === 1 ? "child" : "children"} under 12`,
+    );
+  }
+  const list = parts.length > 1 ? `${parts.slice(0, -1).join(", ")} ${es ? "y" : "and"} ${parts.at(-1)}` : parts[0];
+  const total = es ? `${r.guests} ${r.guests === 1 ? "persona" : "personas"}` : `${r.guests} ${r.guests === 1 ? "person" : "people"}`;
+  return `${total}: ${list}`;
+}
+
 const eyebrowStyle = `font-family:${FONT};font-size:12px;line-height:1;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;`;
 
 function layout(opts: {
@@ -146,7 +169,7 @@ const copy = {
     intro: "Gracias por reservar en Sala HAVEN. Estos son los detalles de su visita:",
     date: "Fecha",
     time: "Hora",
-    guests: "Huéspedes",
+    guests: "Personas",
     airline: "Aerolínea",
     flight: "Vuelo",
     celebration: "Celebración",
@@ -164,7 +187,7 @@ const copy = {
     intro: "Thank you for booking Sala HAVEN. Here are the details of your visit:",
     date: "Date",
     time: "Time",
-    guests: "Guests",
+    guests: "Party",
     airline: "Airline",
     flight: "Flight",
     celebration: "Celebrating",
@@ -187,7 +210,7 @@ export function guestConfirmationEmail(
   const rows: [string, string][] = [
     [t.date, esc(date)],
     [t.time, esc(formatTime(reservation.reservation_time))],
-    [t.guests, String(reservation.guests)],
+    [t.guests, esc(partyBreakdown(reservation, lang))],
     [t.airline, esc(reservation.airline)],
     [t.flight, esc(reservation.flight_number)],
   ];
@@ -251,7 +274,7 @@ export function staffNotificationEmail(
   const rows: [string, string][] = [
     ["Fecha", esc(date)],
     ["Hora", esc(time)],
-    ["Huéspedes", String(reservation.guests)],
+    ["Personas", esc(partyBreakdown(reservation, "es"))],
     ["Nombre", esc(reservation.full_name)],
     ["Teléfono", `<a href="tel:${phone}" style="color:${NAVY};">${phone}</a>`],
     ["Email", `<a href="mailto:${email}" style="color:${NAVY};">${email}</a>`],
@@ -273,7 +296,7 @@ export function staffNotificationEmail(
     html: layout({
       assetBaseUrl,
       lang: "es",
-      preheader: `${reservation.full_name} · ${date}, ${time} · ${reservation.guests} huésped(es)`,
+      preheader: `${reservation.full_name} · ${date}, ${time} · ${partyBreakdown(reservation, "es")}`,
       eyebrow: "Notificación interna",
       headline: "Nueva reservación",
       body,

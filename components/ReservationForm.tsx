@@ -8,6 +8,7 @@ import { DateField } from "./reservation/DateField";
 import { TimeField } from "./reservation/TimeField";
 import { Listbox } from "./reservation/Listbox";
 import { CelebrationField } from "./reservation/CelebrationField";
+import { MAX_ADULT_COMPANIONS, MAX_MINORS } from "@/lib/reservation-limits";
 
 // 16px minimum on every field — iOS Safari auto-zooms on focus for any
 // input rendered below that, which reads as an unwanted/unexpected zoom.
@@ -15,7 +16,9 @@ const fieldBase =
   "w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-base text-white placeholder:text-gray-light/50 outline-none transition-colors focus:border-copper-1 focus:bg-white/10";
 const labelClass = "mb-1.5 block text-xs font-medium text-gray-light";
 
-const MAX_GUESTS = 4;
+function countOptions(max: number) {
+  return Array.from({ length: max + 1 }, (_, i) => ({ value: String(i), label: String(i) }));
+}
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -25,8 +28,10 @@ export function ReservationForm() {
 
   const [travelDate, setTravelDate] = useState("");
   const [time, setTime] = useState("");
-  const [guests, setGuests] = useState("1");
-  const [fullName, setFullName] = useState("");
+  const [adultCompanions, setAdultCompanions] = useState("0");
+  const [minors, setMinors] = useState("0");
+  const [firstNames, setFirstNames] = useState("");
+  const [lastNames, setLastNames] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
@@ -38,10 +43,8 @@ export function ReservationForm() {
   const [missing, setMissing] = useState<Set<string>>(new Set());
   const [status, setStatus] = useState<Status>("idle");
 
-  const guestOptions = useMemo(
-    () => Array.from({ length: MAX_GUESTS }, (_, i) => ({ value: String(i + 1), label: String(i + 1) })),
-    [],
-  );
+  const adultCompanionOptions = useMemo(() => countOptions(MAX_ADULT_COMPANIONS), []);
+  const minorOptions = useMemo(() => countOptions(MAX_MINORS), []);
   const airlineOptions = useMemo(
     () => airlines.map((name) => ({ value: name, label: name })),
     [],
@@ -54,7 +57,7 @@ export function ReservationForm() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    const requiredFields: Record<string, string> = { travelDate, time, guests, airline };
+    const requiredFields: Record<string, string> = { travelDate, time, airline };
     const nextMissing = new Set(Object.keys(requiredFields).filter((k) => !requiredFields[k]));
     setMissing(nextMissing);
 
@@ -77,8 +80,10 @@ export function ReservationForm() {
     const reservation = {
       travel_date: travelDate,
       reservation_time: time,
-      guests: Number(guests),
-      full_name: fullName,
+      adult_companions: Number(adultCompanions),
+      minors: Number(minors),
+      first_names: firstNames,
+      last_names: lastNames,
       phone,
       email,
       airline,
@@ -124,23 +129,52 @@ export function ReservationForm() {
         </Field>
       </div>
 
-      <Field label={bi(t.guestsLabel)} htmlFor="guests">
-        <Listbox id="guests" value={guests} onChange={setGuests} options={guestOptions} />
-      </Field>
-
       <div>
-        <label className={labelClass} htmlFor="fullName">
-          {bi(t.fullNameLabel)}
-        </label>
-        <input
-          id="fullName"
-          type="text"
-          autoComplete="name"
-          required
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          className={fieldBase}
-        />
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <Field label={bi(t.adultCompanionsLabel)} htmlFor="adultCompanions">
+            <Listbox
+              id="adultCompanions"
+              value={adultCompanions}
+              onChange={setAdultCompanions}
+              options={adultCompanionOptions}
+            />
+          </Field>
+          <Field label={bi(t.minorsLabel)} htmlFor="minors">
+            <Listbox id="minors" value={minors} onChange={setMinors} options={minorOptions} />
+          </Field>
+        </div>
+        <p className="mt-1.5 text-xs text-gray-light">{t.partyHint[lang](MAX_ADULT_COMPANIONS, MAX_MINORS)}</p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div>
+          <label className={labelClass} htmlFor="firstNames">
+            {bi(t.firstNamesLabel)}
+          </label>
+          <input
+            id="firstNames"
+            type="text"
+            autoComplete="given-name"
+            required
+            value={firstNames}
+            onChange={(e) => setFirstNames(e.target.value)}
+            className={fieldBase}
+          />
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="lastNames">
+            {bi(t.lastNamesLabel)}
+          </label>
+          <input
+            id="lastNames"
+            type="text"
+            autoComplete="family-name"
+            required
+            value={lastNames}
+            onChange={(e) => setLastNames(e.target.value)}
+            className={fieldBase}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">

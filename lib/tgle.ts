@@ -14,34 +14,22 @@ export const isTgleConfigured = Boolean(API_URL && API_KEY);
 
 export type TgleResult = { ok: true; id: string } | { ok: false; error: string };
 
-// TGLE takes given names and surnames separately; the form collects one
-// "full name" field. Mexican names usually end in two surnames.
-export function splitFullName(fullName: string) {
-  const words = fullName.trim().split(/\s+/);
-  if (words.length <= 1) return { name: words[0] ?? "", lastNames: "" };
-  const surnameCount = words.length >= 3 ? 2 : 1;
-  return {
-    name: words.slice(0, -surnameCount).join(" "),
-    lastNames: words.slice(-surnameCount).join(" "),
-  };
-}
-
 export async function createExternalReservation(
   reservation: ReservationInsert,
   notes: string,
 ): Promise<TgleResult> {
   if (!API_URL || !API_KEY) return { ok: false, error: "TGLE API is not configured." };
 
-  const { name, lastNames } = splitFullName(reservation.full_name);
   const body = {
-    name,
-    lastNames,
+    name: reservation.first_names,
+    lastNames: reservation.last_names,
     email: reservation.email,
     phone: reservation.phone,
     airline: reservation.airline,
     flightNumber: reservation.flight_number,
     // Local Mexico City time, no offset — TGLE stores it as -06:00.
     reservationDate: `${reservation.travel_date}T${reservation.reservation_time.slice(0, 5)}`,
+    // Whole party (cardholder + companions + minors); the breakdown goes in notes.
     personsNumber: reservation.guests,
     terminal: "T1",
     source: "web",

@@ -2,8 +2,10 @@ import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-server";
 import { createExternalReservation, isTgleConfigured } from "@/lib/tgle";
 import { resend } from "@/lib/resend";
+import { MAX_ADULT_COMPANIONS, MAX_MINORS } from "@/lib/reservation-limits";
 import {
   celebrationLabels,
+  partyBreakdown,
   guestConfirmationEmail,
   staffNotificationEmail,
   type TgleSyncSummary,
@@ -20,7 +22,9 @@ const STAFF_EMAIL = process.env.TGLE_STAFF_EMAIL;
 // Where guest replies to the confirmation go; the "from" mailbox may not exist.
 const REPLY_TO = process.env.RESEND_REPLY_TO || undefined;
 
-const MAX_GUESTS = 4;
+function count(value: unknown, max: number) {
+  return typeof value === "number" && Number.isInteger(value) && value >= 0 && value <= max ? value : null;
+}
 
 function str(value: unknown, max = 200) {
   return typeof value === "string" && value.trim() && value.length <= max ? value.trim() : null;
@@ -32,18 +36,20 @@ function parseReservation(input: unknown): ReservationInsert | null {
 
   const travel_date = str(r.travel_date, 10);
   const reservation_time = str(r.reservation_time, 8);
-  const full_name = str(r.full_name);
+  const first_names = str(r.first_names, 100);
+  const last_names = str(r.last_names, 100);
   const phone = str(r.phone, 40);
   const email = str(r.email, 254);
   const airline = str(r.airline);
   const flight_number = str(r.flight_number, 20);
-  const guests = r.guests;
+  const adult_companions = count(r.adult_companions, MAX_ADULT_COMPANIONS);
+  const minors = count(r.minors, MAX_MINORS);
 
   if (!travel_date || !/^\d{4}-\d{2}-\d{2}$/.test(travel_date)) return null;
   if (!reservation_time || !/^\d{2}:\d{2}(:\d{2})?$/.test(reservation_time)) return null;
-  if (!full_name || !phone || !airline || !flight_number) return null;
+  if (!first_names || !last_names || !phone || !airline || !flight_number) return null;
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return null;
-  if (typeof guests !== "number" || !Number.isInteger(guests) || guests < 1 || guests > MAX_GUESTS) return null;
+  if (adult_companions === null || minors === null) return null;
 
   const celebration = r.celebration == null ? null : str(r.celebration, 500);
   if (r.celebration != null && celebration === null) return null;
@@ -51,8 +57,12 @@ function parseReservation(input: unknown): ReservationInsert | null {
   return {
     travel_date,
     reservation_time,
-    guests,
-    full_name,
+    guests: 1 + adult_companions + minors,
+    adult_companions,
+    minors,
+    full_name: `${first_names} ${last_names}`,
+    first_names,
+    last_names,
     phone,
     email,
     airline,
@@ -64,7 +74,10 @@ function parseReservation(input: unknown): ReservationInsert | null {
 }
 
 function tgleNotes(reservation: ReservationInsert) {
-  const parts = ["Reservación desde la landing de Sala HAVEN (Visa Infinite)."];
+  const parts = [
+    "Reservación desde la landing de Sala HAVEN (Visa Infinite).",
+    `${partyBreakdown(reservation, "es")}.`,
+  ];
   if (reservation.celebration) parts.push(`Celebración: ${celebrationLabels(reservation.celebration, "es")}.`);
   parts.push(`Idioma del huésped: ${reservation.language === "es" ? "español" : "inglés"}.`);
   return parts.join(" ");

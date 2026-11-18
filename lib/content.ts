@@ -25,9 +25,20 @@ export const form = {
   travelDatePlaceholder: { es: "Seleccione una fecha", en: "Select a date" } satisfies Bi,
   timeLabel: { es: "Hora de reservación *", en: "Reservation time *" } satisfies Bi,
   timePlaceholder: { es: "Seleccione horario", en: "Select a time" } satisfies Bi,
-  guestsLabel: { es: "Número de huéspedes *", en: "Number of guests *" } satisfies Bi,
-  guestsPlaceholder: { es: "Seleccione", en: "Select" } satisfies Bi,
-  fullNameLabel: { es: "Nombre completo *", en: "Full name *" } satisfies Bi,
+  // Party size and split name fields replace the copy deck's "Número de
+  // huéspedes" / "Nombre completo" to match TGLE's VISA-HAVEN access limits
+  // and its separate name/surname fields — approved by TGLE IT, not from
+  // the copy deck.
+  adultCompanionsLabel: { es: "Acompañante adulto", en: "Adult companion" } satisfies Bi,
+  minorsLabel: { es: "Menores de 12 años", en: "Children under 12" } satisfies Bi,
+  partyHint: {
+    es: (adults: number, minors: number) =>
+      `Acceso para el titular de la tarjeta, ${adults} acompañante adulto y hasta ${minors} menores de 12 años.`,
+    en: (adults: number, minors: number) =>
+      `Access for the cardholder, ${adults} adult companion and up to ${minors} children under 12.`,
+  },
+  firstNamesLabel: { es: "Nombre(s) *", en: "First name(s) *" } satisfies Bi,
+  lastNamesLabel: { es: "Apellidos *", en: "Last name(s) *" } satisfies Bi,
   phoneLabel: { es: "Teléfono *", en: "Phone number *" } satisfies Bi,
   emailLabel: { es: "Email *", en: "Email *" } satisfies Bi,
   confirmEmailLabel: { es: "Confirmar email *", en: "Confirm email *" } satisfies Bi,

@@ -10,9 +10,15 @@ create table if not exists public.reservations (
   -- card, so it isn't stored as free text.
   travel_date date not null,
   reservation_time time not null,
+  -- Total party: cardholder + adult_companions + minors.
   guests smallint not null check (guests between 1 and 6),
+  adult_companions smallint not null default 0 check (adult_companions between 0 and 4),
+  minors smallint not null default 0 check (minors between 0 and 4),
 
+  -- full_name is first_names + last_names joined.
   full_name text not null,
+  first_names text,
+  last_names text,
   phone text not null,
   email text not null,
   airline text not null,
